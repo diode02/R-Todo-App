@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 
-import {Input} from '@material-ui/core'
+// import {Input} from '@material-ui/core'
 import './app.css';
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -29,10 +29,18 @@ function App() {
   }
 
   let handleDelete = (e)=>{
-    console.log(e.target.id);
-
     setTasks(
       tasks.filter((task,index)=> index!=e.target.id )
+    )
+  }
+
+  let handleTaskComplete = (e)=>{
+    setTasks(
+      tasks.map((task,index)=>{
+        if(index==e.target.task_id)
+          task.completed=!task.completed
+        return task;
+      })
     )
   }
 
@@ -42,8 +50,8 @@ function App() {
 
   return (
     <div style={{
-      backgroundColor: 'black' ,
-      color: 'white',
+      // backgroundColor: 'black' ,
+      // color: 'white',
       height:'100vh',
       display: "flex"
     }}>
@@ -110,7 +118,15 @@ function App() {
         {tasks.map((task, index)=>
           <li key={index}><div style={{
             fontSize:'20px'
-          }}>Description: {task.description} Completed: {task.completed?'YES':'NO'}<button style={{
+          }}>
+            <p>Description: {task.description} Completed: {task.completed?'YES':'NO'}</p>
+
+            <label className="container">One
+                <input type="checkbox" task_id={index} checked={task.completed} onChange={handleTaskComplete}></input>
+                <span className="checkmark"></span>
+            </label>
+
+          <button style={{
             fontWeight: 'bold',
             fontSize: '20px',
             marginLeft:'20px'
